@@ -1,5 +1,5 @@
 from typing import List, Dict
-from decorators import input_error
+from bot.errors import input_error
 
 @input_error
 def add_contact(args: List[str], contacts: Dict[str, str]) -> str:

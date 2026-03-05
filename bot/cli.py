@@ -1,5 +1,5 @@
 from typing import Callable, Dict, List, Tuple
-from handlers import add_contact, change_contact, show_phone, show_all
+from bot.commands import add_contact, change_contact, show_phone, show_all
 
 
 def parse_input(user_input: str) -> Tuple[str, List[str]]:
