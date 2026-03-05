@@ -40,9 +40,8 @@ class Record:
         self.name = Name(name)
         self.phones = []
 
-    def add_phone(self, value):
-        phone = Phone(value)
-        self.phones.append(phone)
+    def add_phone(self, phone: str) -> None:
+        self.phones.append(Phone(phone))
 
     def find_phone(self, phone):
         for item in self.phones:

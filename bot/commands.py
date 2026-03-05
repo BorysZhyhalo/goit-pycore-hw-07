@@ -1,29 +1,58 @@
-from typing import List, Dict
+from typing import List
 from bot.errors import input_error
+from bot.addressbook import AddressBook
+from bot.addressbook import Record
 
 @input_error
-def add_contact(args: List[str], contacts: Dict[str, str]) -> str:
-    name, phone = args
-    contacts[name] = phone
-    return "Contact added."
+def add_contact(args: List[str], book: AddressBook) -> str:
+    name, phone, *_ = args
+    record = book.find(name)
+    message = "Contact updated."
+    
+    if record is None:
+        record = Record(name)
+        book.add_record(record)
+        message = "Contact added."
+
+    record.add_phone(phone)
+    return message
 
 @input_error
-def change_contact(args: List[str], contacts: Dict[str, str]) -> str:
-    name, phone = args
-    contacts[name]
-    contacts[name] = phone
-    return "Contact updated."
+def change_contact(args: List[str], book: AddressBook) -> str:
+    name, old_phone, new_phone = args[0], args[1], args[2]
+
+    record = book.find(name)
+    if record is None:
+        return "Contact not found."
+
+    # знайти телефон для заміни
+    for i, phone_obj in enumerate(record.phones):
+        if phone_obj.value == old_phone:
+            record.phones[i] = type(phone_obj)(new_phone)  # створює новий Phone (з валідацією)
+            return "Contact updated."
+
+    return "Old phone not found."
 
 @input_error
-def show_phone(args: List[str], contacts: Dict[str, str]) -> str:
+def show_phone(args: List[str], book: AddressBook) -> str:
     name = args[0]
-    return contacts[name]
+    record = book.find(name)
+    if record is None:
+        return "Contact not found."
+
+    phones = "; ".join(phone.value for phone in record.phones)
+    return phones if phones else "No phones."
 
 @input_error
-def show_all(args: List[str], contacts: Dict[str, str]) -> str:
-    if not contacts:
+def show_all(args: List[str], book: AddressBook) -> str:
+    if not book.data:
         return "No contacts found."
-    lines = [f"{name}: {phone}" for name, phone in contacts.items()]
+
+    lines = []
+    for name, record in book.data.items():
+        phones = "; ".join(phone.value for phone in record.phones)
+        lines.append(f"{name}: {phones}")
+
     return "\n".join(lines)
 
 

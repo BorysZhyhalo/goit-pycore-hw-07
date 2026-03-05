@@ -1,5 +1,6 @@
 from typing import Callable, Dict, List, Tuple
 from bot.commands import add_contact, change_contact, show_phone, show_all
+from bot.addressbook import AddressBook
 
 
 def parse_input(user_input: str) -> Tuple[str, List[str]]:
@@ -7,19 +8,21 @@ def parse_input(user_input: str) -> Tuple[str, List[str]]:
     return cmd.strip().lower(), args
 
 def main() -> None:
-    contacts: Dict[str, str] = {}
+    book: AddressBook = AddressBook()
 
-    commands: Dict[str, Callable[[List[str], Dict[str, str]], str]] = {
-        "add": add_contact,
-        "change": change_contact,
-        "phone": show_phone,
-        "all": show_all,
-    }
+    commands: Dict[str, Callable[[List[str], AddressBook], str]] = {
+    "add": add_contact,
+    "change": change_contact,
+    "phone": show_phone,
+    "all": show_all
+}
 
     print("Welcome to the assistant bot!")
 
     while True:
         user_input = input("Enter a command: ")
+        if not user_input.strip():
+            continue
         command, args = parse_input(user_input)
 
         if command in {"close", "exit"}:
@@ -33,7 +36,7 @@ def main() -> None:
         handler = commands.get(command)
 
         if handler:
-            result = handler(args, contacts)
+            result = handler(args, book)
             print(result)
         else:
             print("Invalid command.")
