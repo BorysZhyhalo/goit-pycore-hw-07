@@ -1,4 +1,5 @@
-### Перевірка старту
+### Test_1 
+Перевірка старту
 
 **hello**
 Порожня книга
@@ -36,3 +37,12 @@ change John 0000000000 2222222222
 
 **Вихід**
 exit
+
+
+### Test_2 birthday
+Тест-команди для Birthday
+
+- add John 1234567890
+- add-birthday John 05.03.1990 → має повернути "Birthday added."
+- show-birthday John → має показати 05.03.1990
+- birthdays → або список, або "No birthdays in the next 7 days."

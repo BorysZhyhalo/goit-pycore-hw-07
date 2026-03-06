@@ -1,5 +1,6 @@
 from typing import Callable, Dict, List, Tuple
 from bot.commands import add_contact, change_contact, show_phone, show_all
+from bot.commands import add_birthday, show_birthday, birthdays
 from bot.addressbook import AddressBook
 
 
@@ -9,12 +10,16 @@ def parse_input(user_input: str) -> Tuple[str, List[str]]:
 
 def main() -> None:
     book: AddressBook = AddressBook()
-
+    
+    # Command router: maps CLI command names to handler functions.
     commands: Dict[str, Callable[[List[str], AddressBook], str]] = {
     "add": add_contact,
     "change": change_contact,
     "phone": show_phone,
-    "all": show_all
+    "all": show_all,
+    "add-birthday": add_birthday,
+    "show-birthday": show_birthday,
+    "birthdays": birthdays
 }
 
     print("Welcome to the assistant bot!")

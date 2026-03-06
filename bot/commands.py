@@ -33,6 +33,7 @@ def change_contact(args: List[str], book: AddressBook) -> str:
 
     return "Old phone not found."
 
+# Returns all phones for a contact in one line separated by "; "
 @input_error
 def show_phone(args: List[str], book: AddressBook) -> str:
     name = args[0]
@@ -53,6 +54,39 @@ def show_all(args: List[str], book: AddressBook) -> str:
         phones = "; ".join(phone.value for phone in record.phones)
         lines.append(f"{name}: {phones}")
 
+    return "\n".join(lines)
+
+@input_error
+# Adds birthday to an existing contact; date must be in DD.MM.YYYY.
+def add_birthday(args: List[str], book: AddressBook) -> str:
+    name, bday = args[0], args[1]
+    record = book.find(name)
+    if record is None:
+        return "Contact not found."
+
+    record.add_birthday(bday)
+    return "Birthday added."
+
+@input_error
+def show_birthday(args: List[str], book: AddressBook) -> str:
+    name = args[0]
+    record = book.find(name)
+    if record is None:
+        return "Contact not found."
+
+    if record.birthday is None:
+        return "Birthday not set."
+
+    return record.birthday.value.strftime("%d.%m.%Y")
+
+@input_error
+# Prints upcoming birthdays for the next week using AddressBook.get_upcoming_birthdays().
+def birthdays(args: List[str], book: AddressBook) -> str:
+    upcoming = book.get_upcoming_birthdays()
+    if not upcoming:
+        return "No birthdays in the next 7 days."
+
+    lines = [f"{u['name']}: {u['congratulation_date']}" for u in upcoming]
     return "\n".join(lines)
 
 
