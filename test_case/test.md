@@ -46,3 +46,17 @@ exit
 - add-birthday John 05.03.1990 → має повернути "Birthday added."
 - show-birthday John → має показати 05.03.1990
 - birthdays → або список, або "No birthdays in the next 7 days."
+
+### Final test
+
+В CLI прогнати:
+
+- add John 1234567890
+- add John 0987654321
+- phone John
+- change John 1234567890 1111111111
+- add-birthday John 05.03.1990
+- show-birthday John
+- birthdays
+
+exit
